@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painted_Peachy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,600..700,0..100,0..1&family=Nunito:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one narrow mobile column like a card binder page: hero, links, a 3-up "binder sleeve" gallery, about, follow CTA. Brand: white, peach, blush, berry ink, sage. */
+:root {
+  --paper: #fffaf8;      /* page background, warm white */
+  --blush: #fde6e4;      /* raised surfaces, sleeves */
+  --peach: #f7a98b;      /* brand accent */
+  --pink: #ef7f9c;       /* second accent, buttons */
+  --berry: #5b2338;      /* text, deep berry ink */
+  --muted: #8c6470;      /* secondary text */
+  --sage: #8fb59a;       /* leaf accent, used sparingly */
+  --line: #f3d3d1;       /* borders */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--paper);
+  color: var(--berry);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+}
+a { color: var(--pink); }
+:focus-visible { outline: 3px solid var(--sage); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+/* Hero */
+header.hero {
+  padding: 44px 0 28px;
+  background:
+    radial-gradient(90% 70% at 85% 0%, rgba(247,169,139,0.35), transparent 60%),
+    radial-gradient(80% 60% at 0% 20%, rgba(239,127,156,0.22), transparent 60%),
+    var(--paper);
+}
+.hero .wrap { display: grid; gap: 12px; justify-items: start; }
+.peach-mark { width: 88px; height: 88px; }
+.eyebrow {
+  font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  font-weight: 700; margin: 0;
+}
+h1 {
+  font-family: var(--font-display); font-weight: 700; font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-size: clamp(34px, 9vw, 52px); line-height: 1.05; margin: 0; color: var(--berry);
+  text-wrap: balance;
+}
+h1 .us { color: var(--pink); }
+.tagline { margin: 0; color: var(--muted); max-width: 52ch; font-size: 17px; }
+.placeholder-note {
+  font-size: 13px; color: var(--berry); background: #fff; border: 1px dashed var(--pink);
+  padding: 2px 8px; border-radius: 6px; font-weight: 700;
+}
+
+/* Links */
+.links { display: grid; gap: 10px; padding: 8px 0 24px; }
+.link {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 18px; border: 1.5px solid var(--line); border-radius: 999px;
+  background: #fff; color: var(--berry); text-decoration: none; font-weight: 700;
+}
+.link span.handle { color: var(--muted); font-weight: 500; font-size: 14px; }
+.link:hover { border-color: var(--pink); }
+.link.primary { background: var(--pink); border-color: var(--pink); color: #fff; }
+.link.primary span.handle { color: #fff3f5; }
+
+/* Section headings */
+section { padding: 28px 0; border-top: 1.5px solid var(--line); }
+h2 {
+  font-family: var(--font-display); font-weight: 600; font-variation-settings: "SOFT" 100;
+  font-size: 26px; margin: 0 0 4px; text-wrap: balance;
+}
+.section-sub { margin: 0 0 18px; color: var(--muted); }
+
+/* Filter chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.chip {
+  font: inherit; font-size: 14px; font-weight: 700;
+  padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--line); background: #fff; color: var(--berry);
+}
+.chip[aria-pressed="true"] { background: var(--berry); color: #fff; border-color: var(--berry); }
+
+/* Gallery: binder sleeves, 3 across like a 9-pocket page */
+.gallery {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  padding: 12px; border-radius: 16px; background: var(--blush);
+}
+@media (max-width: 400px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+.sleeve {
+  position: relative; aspect-ratio: 63 / 88; /* standard TCG card ratio, 63 x 88 mm */
+  border-radius: 10px; overflow: hidden; cursor: pointer; padding: 0;
+  border: 2px solid #fff; background: #fff;
+  box-shadow: 0 2px 6px rgba(91,35,56,0.10);
+}
+.sleeve:hover { border-color: var(--peach); }
+.empty { grid-column: 1 / -1; margin: 0; padding: 28px 12px; text-align: center; color: var(--muted); font-weight: 600; }
+.sleeve .art { position: absolute; inset: 0; }
+.sleeve img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sleeve .label {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 20px 8px 8px; text-align: left;
+  background: linear-gradient(transparent, rgba(91,35,56,0.82));
+  font-size: 12px; font-weight: 700; color: #fff; line-height: 1.3;
+}
+.sleeve .kind {
+  position: absolute; top: 6px; left: 6px;
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 800;
+  background: #fff; color: var(--berry); padding: 2px 7px; border-radius: 999px;
+}
+
+/* About */
+.about p { max-width: 62ch; margin: 0 0 12px; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+.fact { border-radius: 14px; padding: 12px 16px; background: var(--blush); }
+.fact b { display: block; font-family: var(--font-display); color: var(--pink); font-size: 24px; font-variant-numeric: tabular-nums; }
+.fact span { color: var(--muted); font-size: 14px; }
+
+/* CTA */
+.cta {
+  border-radius: 20px; padding: 22px;
+  background: linear-gradient(150deg, #ffe3d6, #fde0e8);
+}
+.cta h2 { margin-bottom: 8px; }
+.cta p { margin: 0 0 14px; color: var(--muted); }
+
+footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top: 1.5px solid var(--line); }
+
+/* Lightbox */
+.lightbox {
+  position: fixed; inset: 0; background: rgba(255,250,248,0.96);
+  display: none; align-items: center; justify-content: center; padding: 20px; z-index: 10;
+}
+.lightbox.open { display: flex; }
+.lightbox figure { margin: 0; max-width: 420px; width: 100%; display: grid; gap: 12px; }
+.lightbox .big { border-radius: 16px; overflow: hidden; border: 3px solid #fff; box-shadow: 0 8px 30px rgba(91,35,56,0.18); background: var(--blush); display: grid; place-items: center; }
+.lightbox .big img { display: block; width: 100%; max-height: 62vh; object-fit: contain; }
+.lightbox { overflow-y: auto; }
+.thumbs { display: flex; gap: 8px; }
+.thumbs button { padding: 0; width: 48px; height: 64px; border-radius: 8px; overflow: hidden; border: 2px solid var(--line); cursor: pointer; background: #fff; }
+.thumbs button[aria-current="true"] { border-color: var(--pink); }
+.thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumbs:empty { display: none; }
+.lightbox figcaption h3 { font-family: var(--font-display); margin: 0; font-size: 22px; }
+.lightbox figcaption p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.lb-controls { display: flex; gap: 8px; justify-content: space-between; }
+.lb-btn {
+  font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  background: #fff; color: var(--berry); border: 1.5px solid var(--line);
+}
+.lb-btn:hover { border-color: var(--pink); }
+#lb-close { background: var(--berry); color: #fff; border-color: var(--berry); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sleeve { transition: transform .18s ease, border-color .18s ease; }
+  .sleeve:hover { transform: translateY(-3px) rotate(-1deg); }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <svg class="peach-mark" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="56" r="38" fill="#f7a98b"/>
+      <path d="M50 20 C40 40 40 72 50 94" stroke="#ef7f9c" stroke-width="3" fill="none" opacity=".7"/>
+      <circle cx="36" cy="46" r="12" fill="#fff" opacity=".35"/>
+      <path d="M52 20 C60 6 78 6 84 14 C74 22 62 24 52 20Z" fill="#8fb59a"/>
+      <path d="M50 22 L48 10" stroke="#5b2338" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <p class="eyebrow">Hand-painted TCG binders &amp; tokens</p>
+    <h1>Painted<span class="us">_</span>Peachy</h1>
+    <p class="tagline">Hand-painted card binders and Riftbound tokens. Every piece is painted by hand, so no two are the same.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="links" aria-label="Follow links">
+    <a class="link primary" href="https://www.instagram.com/painted_peachy/" target="_blank" rel="noopener">Follow on Instagram <span class="handle">@painted_peachy</span></a>
+    <a class="link" href="https://www.tiktok.com/@painted_peachy" target="_blank" rel="noopener">TikTok: painting videos <span class="handle">@painted_peachy</span></a>
+    <a class="link" href="#gallery">See my work <span class="handle">Painted binders</span></a>
+  </nav>
+
+  <section id="gallery" aria-labelledby="gallery-h">
+    <h2 id="gallery-h">The Binder</h2>
+    <p class="section-sub">Tap any piece to see it up close.</p>
+    <div class="chips" role="group" aria-label="Filter gallery">
+      <button class="chip" id="f-all" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" id="f-league" data-filter="league" aria-pressed="false">League &amp; Riftbound</button>
+      <button class="chip" id="f-pokemon" data-filter="pokemon" aria-pressed="false">Pokémon</button>
+      <button class="chip" id="f-token" data-filter="token" aria-pressed="false">Tokens</button>
+    </div>
+    <div class="gallery" id="gallery-grid"></div>
+  </section>
+
+  <section class="about" aria-labelledby="about-h">
+    <h2 id="about-h">About Me</h2>
+    <p>I'm Painted_Peachy. I started painting in 2026, and I hand-paint card binders and tokens for TCG players. Most of my work is League of Legends champions for the Riftbound crowd, plus Pokémon pieces for collectors.</p>
+    <p>Every binder cover is painted by hand and finished to hold up to real use at the table, so your collection looks as good on the outside as it does inside.</p>
+    <div class="facts">
+      <div class="fact"><b>2026</b><span>started painting</span></div>
+      <div class="fact"><b>7</b><span>binders in this gallery</span></div>
+    </div>
+  </section>
+
+  <section id="follow" aria-labelledby="follow-h">
+    <div class="cta">
+      <h2 id="follow-h">Met me at the card show?</h2>
+      <p>Follow along for new pieces, painting process videos and the next show I'll be at. Commission requests are open by DM.</p>
+      <a class="link primary" href="https://www.instagram.com/painted_peachy/" target="_blank" rel="noopener">Follow on Instagram <span class="handle">@painted_peachy</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Original hand-painted fan art by Painted_Peachy. League of Legends and Riftbound are trademarks of Riot Games; Pokémon is a trademark of Nintendo, Creatures and Game Freak. Not affiliated with or endorsed by either.</div>
+</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lb-title">
+  <figure>
+    <div class="big" id="lb-art"></div>
+    <div class="thumbs" id="lb-thumbs"></div>
+    <figcaption>
+      <h3 id="lb-title"></h3>
+      <p id="lb-desc"></p>
+    </figcaption>
+    <div class="lb-controls">
+      <button class="lb-btn" id="lb-prev">Previous</button>
+      <button class="lb-btn" id="lb-close">Close</button>
+      <button class="lb-btn" id="lb-next">Next</button>
+    </div>
+  </figure>
+</div>
+
+<script>
+// Gallery data. Each piece can have several photos; the first is the cover shot.
+// type: "binder" (default) or "token". Tokens show under the Tokens tab and their franchise tab.
+const PIECES = [
+  { cat: "league",  title: "The Akali Binder",            desc: "Akali tying back her hair, with incense smoke and her gear laid out behind her.", photos: ["akali-1", "akali-2"] },
+  { cat: "pokemon", title: "Dragonite Dreams Binder",     desc: "Dragonite soaring through pink clouds and stars with Dratini and Dragonair.", photos: ["dragonite"] },
+  { cat: "league",  title: "Ahri Binder",                 desc: "Ahri in soft pinks and swirling ocean blues.", photos: ["ahri"] },
+  { cat: "pokemon", title: "Haunted Gengar Binder",       desc: "Gengar grinning over a glowing haunted town under a crescent moon.", photos: ["gengar-town"] },
+  { cat: "league",  title: "T1 Faker Galio Binder",       desc: "T1 Faker Galio in gold armour, charging through streaks of fire on a red binder.", photos: ["armored-1", "armored-2"] },
+  { cat: "pokemon", title: "Forest Encounter Binder",     desc: "Pikachu, Gengar and Ekans meeting in a moonlit forest.", photos: ["gengar-forest"] },
+  { cat: "pokemon", title: "Starlight Jolteon Binder",    desc: "Jolteon standing in a starry night sky with aurora ribbons.", photos: ["jolteon"] },
+];
+
+const thumb = n => `images/${n}-thumb.jpg`;
+const full  = n => `images/${n}.jpg`;
+const kindLabel = p => p.type === "token" ? "Token" : (p.cat === "league" ? "League" : "Pokémon");
+
+const grid = document.getElementById("gallery-grid");
+let filter = "all";
+let visible = [];
+
+function render() {
+  visible = PIECES.filter(p => filter === "all" || (filter === "token" ? p.type === "token" : p.cat === filter));
+  if (!visible.length) {
+    grid.innerHTML = `<p class="empty">${filter === "token" ? "Fresh tokens are drying! Photos coming soon. Ask me at the table to see them in person." : "Nothing here yet."}</p>`;
+    return;
+  }
+  grid.innerHTML = visible.map((p, i) => `
+    <button class="sleeve" data-i="${i}" aria-label="Open ${p.title}">
+      <img src="${thumb(p.photos[0])}" alt="${p.title}" loading="lazy" width="360" height="480">
+      <span class="kind">${kindLabel(p)}</span>
+      <span class="label">${p.title}</span>
+    </button>`).join("");
+}
+
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    filter = chip.dataset.filter;
+    document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c === chip)));
+    render();
+  });
+});
+
+const lb = document.getElementById("lightbox");
+let current = 0;
+function openLb(i) {
+  current = (i + visible.length) % visible.length;
+  const p = visible[current];
+  showPhoto(p, 0);
+  document.getElementById("lb-thumbs").innerHTML = p.photos.length > 1 ? p.photos.map((n, j) =>
+    `<button data-j="${j}" aria-label="Photo ${j + 1} of ${p.photos.length}" aria-current="${j === 0}"><img src="${thumb(n)}" alt=""></button>`).join("") : "";
+  document.getElementById("lb-title").textContent = p.title;
+  document.getElementById("lb-desc").textContent = p.desc;
+  lb.classList.add("open");
+  document.getElementById("lb-close").focus();
+}
+function showPhoto(p, j) {
+  document.getElementById("lb-art").innerHTML = `<img src="${full(p.photos[j])}" alt="${p.title}, photo ${j + 1}">`;
+  document.querySelectorAll("#lb-thumbs button").forEach(b => b.setAttribute("aria-current", String(Number(b.dataset.j) === j)));
+}
+document.getElementById("lb-thumbs").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (b) showPhoto(visible[current], Number(b.dataset.j));
+});
+function closeLb() { lb.classList.remove("open"); }
+
+grid.addEventListener("click", e => {
+  const s = e.target.closest(".sleeve");
+  if (s) openLb(Number(s.dataset.i));
+});
+document.getElementById("lb-close").addEventListener("click", closeLb);
+document.getElementById("lb-prev").addEventListener("click", () => openLb(current - 1));
+document.getElementById("lb-next").addEventListener("click", () => openLb(current + 1));
+lb.addEventListener("click", e => { if (e.target === lb) closeLb(); });
+document.addEventListener("keydown", e => {
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") closeLb();
+  if (e.key === "ArrowLeft") openLb(current - 1);
+  if (e.key === "ArrowRight") openLb(current + 1);
+});
+
+render();
+</script>
+</body>
+</html>
