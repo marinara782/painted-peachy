@@ -45,7 +45,9 @@ header.hero {
     var(--paper);
 }
 .hero .wrap { display: grid; gap: 12px; justify-items: start; }
-.peach-mark { width: 88px; height: 88px; }
+.peach-mark { width: 88px; height: 88px; overflow: visible; }
+.ltr { display: inline-block; }
+.paint { position: relative; display: inline-block; padding-right: 4px; }
 .eyebrow {
   font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
   font-weight: 700; margin: 0;
@@ -164,6 +166,59 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top:
 #lb-close { background: var(--berry); color: #fff; border-color: var(--berry); }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Bouncy peach intro: peach drops and bounces, leaf wiggles, letters pop up one by one. Plays once. */
+  .peach-mark { transform-origin: 50% 100%; animation: peach-drop 1.1s cubic-bezier(.3,0,.3,1) both; }
+  .peach-mark .leaf { transform-box: fill-box; transform-origin: 0% 100%; animation: leaf-wiggle .9s ease-in-out 1.05s both; }
+  .peach-mark:hover { animation: peach-boing .6s ease; }
+  /* Paint-on title: a brush tip sweeps left to right revealing the name; letters dry from wet pink to berry; underscore swipes in last. */
+  .paint { animation: paint-reveal 1.25s cubic-bezier(.45,.05,.4,1) .6s both; }
+  .paint::after {
+    content: ""; position: absolute; top: 8%; bottom: 2%; width: 26px; left: -26px;
+    border-radius: 60% 40% 40% 60% / 50%;
+    background: linear-gradient(90deg, rgba(247,169,139,0) 0%, var(--peach) 45%, var(--pink) 100%);
+    box-shadow: 4px 0 6px rgba(239,127,156,.35);
+    animation: brush-tip 1.25s cubic-bezier(.45,.05,.4,1) .6s both;
+    pointer-events: none;
+  }
+  .ltr:not(.us) { animation: paint-dry .7s ease-out both; animation-delay: calc(.75s + var(--i) * .08s); }
+  .ltr.us { transform-origin: left center; animation: underscore-swipe .35s cubic-bezier(.34,1.56,.64,1) 1.85s both; }
+  @keyframes peach-drop {
+    0%   { transform: translateY(-140px) scale(1, 1); }
+    45%  { transform: translateY(0) scale(1.12, .86); }
+    60%  { transform: translateY(-34px) scale(.95, 1.06); }
+    75%  { transform: translateY(0) scale(1.06, .93); }
+    86%  { transform: translateY(-9px) scale(1, 1); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes leaf-wiggle {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-14deg); }
+    50% { transform: rotate(10deg); }
+    75% { transform: rotate(-5deg); }
+  }
+  @keyframes peach-boing {
+    0%, 100% { transform: scale(1, 1); }
+    30% { transform: scale(1.12, .88); }
+    60% { transform: scale(.94, 1.08); }
+  }
+  @keyframes paint-reveal {
+    0%   { clip-path: inset(-10% 100% -10% 0); }
+    100% { clip-path: inset(-10% 0 -10% 0); }
+  }
+  @keyframes brush-tip {
+    0%   { left: -26px; opacity: 1; }
+    88%  { opacity: 1; }
+    100% { left: calc(100% - 26px); opacity: 0; }
+  }
+  @keyframes paint-dry {
+    0%   { color: var(--pink); }
+    100% { color: var(--berry); }
+  }
+  @keyframes underscore-swipe {
+    0%   { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+  }
+
   .sleeve { transition: transform .18s ease, border-color .18s ease; }
   .sleeve:hover { transform: translateY(-3px) rotate(-1deg); }
 }
@@ -177,11 +232,11 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top:
       <circle cx="50" cy="56" r="38" fill="#f7a98b"/>
       <path d="M50 20 C40 40 40 72 50 94" stroke="#ef7f9c" stroke-width="3" fill="none" opacity=".7"/>
       <circle cx="36" cy="46" r="12" fill="#fff" opacity=".35"/>
-      <path d="M52 20 C60 6 78 6 84 14 C74 22 62 24 52 20Z" fill="#8fb59a"/>
+      <path class="leaf" d="M52 20 C60 6 78 6 84 14 C74 22 62 24 52 20Z" fill="#8fb59a"/>
       <path d="M50 22 L48 10" stroke="#5b2338" stroke-width="3" stroke-linecap="round"/>
     </svg>
     <p class="eyebrow">Hand-painted TCG binders &amp; tokens</p>
-    <h1>Painted<span class="us">_</span>Peachy</h1>
+    <h1 aria-label="Painted_Peachy"><span class="paint" aria-hidden="true"><span class="ltr" style="--i:0">P</span><span class="ltr" style="--i:1">a</span><span class="ltr" style="--i:2">i</span><span class="ltr" style="--i:3">n</span><span class="ltr" style="--i:4">t</span><span class="ltr" style="--i:5">e</span><span class="ltr" style="--i:6">d</span><span class="ltr us" style="--i:7">_</span><span class="ltr" style="--i:8">P</span><span class="ltr" style="--i:9">e</span><span class="ltr" style="--i:10">a</span><span class="ltr" style="--i:11">c</span><span class="ltr" style="--i:12">h</span><span class="ltr" style="--i:13">y</span></span></h1>
     <p class="tagline">Hand-painted card binders and Riftbound tokens. Every piece is painted by hand, so no two are the same.</p>
   </div>
 </header>
