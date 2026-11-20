@@ -144,7 +144,9 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top:
 .lightbox.open { display: flex; }
 .lightbox figure { margin: 0; max-width: 420px; width: 100%; display: grid; gap: 12px; }
 .lightbox .big { border-radius: 16px; overflow: hidden; border: 3px solid #fff; box-shadow: 0 8px 30px rgba(91,35,56,0.18); background: var(--blush); display: grid; place-items: center; }
-.lightbox .big img { display: block; width: 100%; max-height: 62vh; object-fit: contain; }
+.lightbox .big img, .lightbox .big video { display: block; width: 100%; max-height: 62vh; object-fit: contain; }
+.thumbs button { position: relative; }
+.thumbs .play { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 18px; background: rgba(91,35,56,0.45); }
 .lightbox { overflow-y: auto; }
 .thumbs { display: flex; gap: 8px; }
 .thumbs button { padding: 0; width: 48px; height: 64px; border-radius: 8px; overflow: hidden; border: 2px solid var(--line); cursor: pointer; background: #fff; }
@@ -196,7 +198,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top:
     <p class="section-sub">Tap any piece to see it up close.</p>
     <div class="chips" role="group" aria-label="Filter gallery">
       <button class="chip" id="f-all" data-filter="all" aria-pressed="true">All</button>
-      <button class="chip" id="f-league" data-filter="league" aria-pressed="false">League &amp; Riftbound</button>
+      <button class="chip" id="f-league" data-filter="league" aria-pressed="false">Riftbound</button>
       <button class="chip" id="f-pokemon" data-filter="pokemon" aria-pressed="false">Pokémon</button>
       <button class="chip" id="f-token" data-filter="token" aria-pressed="false">Tokens</button>
     </div>
@@ -209,7 +211,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top:
     <p>Every binder cover is painted by hand and finished to hold up to real use at the table, so your collection looks as good on the outside as it does inside.</p>
     <div class="facts">
       <div class="fact"><b>2026</b><span>started painting</span></div>
-      <div class="fact"><b>7</b><span>binders in this gallery</span></div>
+      <div class="fact"><b>8</b><span>binders in this gallery</span></div>
     </div>
   </section>
 
@@ -253,11 +255,14 @@ const PIECES = [
   { cat: "league",  title: "T1 Faker Galio Binder",       desc: "T1 Faker Galio in gold armour, charging through streaks of fire on a red binder.", photos: ["armored-1", "armored-2"] },
   { cat: "pokemon", title: "Forest Encounter Binder",     desc: "Pikachu, Gengar and Ekans meeting in a moonlit forest.", photos: ["gengar-forest"] },
   { cat: "pokemon", title: "Starlight Jolteon Binder",    desc: "Jolteon standing in a starry night sky with aurora ribbons.", photos: ["jolteon"] },
+  { cat: "pokemon", title: "Gastly Temporal Forces Binder", desc: "Gastly, Haunter and Gengar flooding a moonlit alley while Meowth watches from the steps. Tap the play button to see it in motion.", photos: ["gastly"], video: "gastly" },
+  { cat: "league", type: "token", title: "Poro Recruit Tokens", desc: "Hand-painted Riftbound Recruit tokens (+1 Might) starring a very happy Poro.", photos: ["poro-tokens"] },
 ];
 
 const thumb = n => `images/${n}-thumb.jpg`;
 const full  = n => `images/${n}.jpg`;
-const kindLabel = p => p.type === "token" ? "Token" : (p.cat === "league" ? "League" : "Pokémon");
+const mediaOf = p => [...p.photos.map(n => ({ kind: "photo", n })), ...(p.video ? [{ kind: "video", n: p.video }] : [])];
+const kindLabel = p => p.type === "token" ? "Token" : (p.cat === "league" ? "Riftbound" : "Pokémon");
 
 const grid = document.getElementById("gallery-grid");
 let filter = "all";
@@ -272,7 +277,7 @@ function render() {
   grid.innerHTML = visible.map((p, i) => `
     <button class="sleeve" data-i="${i}" aria-label="Open ${p.title}">
       <img src="${thumb(p.photos[0])}" alt="${p.title}" loading="lazy" width="360" height="480">
-      <span class="kind">${kindLabel(p)}</span>
+      <span class="kind">${kindLabel(p)}${p.video ? " · ▶ Video" : ""}</span>
       <span class="label">${p.title}</span>
     </button>`).join("");
 }
@@ -290,23 +295,27 @@ let current = 0;
 function openLb(i) {
   current = (i + visible.length) % visible.length;
   const p = visible[current];
+  const media = mediaOf(p);
+  document.getElementById("lb-thumbs").innerHTML = media.length > 1 ? media.map((m, j) =>
+    `<button data-j="${j}" aria-label="${m.kind === "video" ? "Play video" : `Photo ${j + 1}`}" aria-current="${j === 0}"><img src="${thumb(m.kind === "video" ? p.photos[0] : m.n)}" alt="">${m.kind === "video" ? '<span class="play" aria-hidden="true">▶</span>' : ""}</button>`).join("") : "";
   showPhoto(p, 0);
-  document.getElementById("lb-thumbs").innerHTML = p.photos.length > 1 ? p.photos.map((n, j) =>
-    `<button data-j="${j}" aria-label="Photo ${j + 1} of ${p.photos.length}" aria-current="${j === 0}"><img src="${thumb(n)}" alt=""></button>`).join("") : "";
   document.getElementById("lb-title").textContent = p.title;
   document.getElementById("lb-desc").textContent = p.desc;
   lb.classList.add("open");
   document.getElementById("lb-close").focus();
 }
 function showPhoto(p, j) {
-  document.getElementById("lb-art").innerHTML = `<img src="${full(p.photos[j])}" alt="${p.title}, photo ${j + 1}">`;
+  const m = mediaOf(p)[j];
+  document.getElementById("lb-art").innerHTML = m.kind === "video"
+    ? `<video src="images/${m.n}.mp4" poster="${full(p.photos[0])}" controls autoplay muted loop playsinline aria-label="${p.title} video"></video>`
+    : `<img src="${full(m.n)}" alt="${p.title}, photo ${j + 1}">`;
   document.querySelectorAll("#lb-thumbs button").forEach(b => b.setAttribute("aria-current", String(Number(b.dataset.j) === j)));
 }
 document.getElementById("lb-thumbs").addEventListener("click", e => {
   const b = e.target.closest("button");
   if (b) showPhoto(visible[current], Number(b.dataset.j));
 });
-function closeLb() { lb.classList.remove("open"); }
+function closeLb() { lb.classList.remove("open"); document.getElementById("lb-art").innerHTML = ""; }
 
 grid.addEventListener("click", e => {
   const s = e.target.closest(".sleeve");
