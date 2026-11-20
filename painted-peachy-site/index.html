@@ -48,6 +48,10 @@ header.hero {
 .peach-mark { width: 88px; height: 88px; overflow: visible; }
 .ltr { display: inline-block; }
 .paint { position: relative; display: inline-block; padding-right: 4px; }
+h1 { position: relative; }
+.sparkles { position: absolute; inset: 0; pointer-events: none; }
+.sparkle { position: absolute; display: none; margin: -6px 0 0 -6px; }
+.sparkle svg { width: 100%; height: 100%; display: block; fill: currentColor; filter: drop-shadow(0 0 3px rgba(255,255,255,.9)); }
 .eyebrow {
   font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
   font-weight: 700; margin: 0;
@@ -180,6 +184,8 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top:
     animation: brush-tip 1.25s cubic-bezier(.45,.05,.4,1) .6s both;
     pointer-events: none;
   }
+  /* Sparkle burst right after the brush: stars twinkle in, spin and fade away. */
+  .sparkle { display: block; animation: sparkle-twinkle .95s ease-in-out both; }
   .ltr:not(.us) { animation: paint-dry .7s ease-out both; animation-delay: calc(.75s + var(--i) * .08s); }
   .ltr.us { transform-origin: left center; animation: underscore-swipe .35s cubic-bezier(.34,1.56,.64,1) 1.85s both; }
   @keyframes peach-drop {
@@ -214,6 +220,13 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top:
     0%   { color: var(--pink); }
     100% { color: var(--berry); }
   }
+  @keyframes sparkle-twinkle {
+    0%   { transform: scale(0) rotate(0deg); opacity: 0; }
+    35%  { transform: scale(1.15) rotate(45deg); opacity: 1; }
+    60%  { transform: scale(.75) rotate(70deg); opacity: 1; }
+    80%  { transform: scale(1) rotate(85deg); opacity: .9; }
+    100% { transform: scale(0) rotate(120deg); opacity: 0; }
+  }
   @keyframes underscore-swipe {
     0%   { transform: scaleX(0); }
     100% { transform: scaleX(1); }
@@ -236,7 +249,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 13px; border-top:
       <path d="M50 22 L48 10" stroke="#5b2338" stroke-width="3" stroke-linecap="round"/>
     </svg>
     <p class="eyebrow">Hand-painted TCG binders &amp; tokens</p>
-    <h1 aria-label="Painted_Peachy"><span class="paint" aria-hidden="true"><span class="ltr" style="--i:0">P</span><span class="ltr" style="--i:1">a</span><span class="ltr" style="--i:2">i</span><span class="ltr" style="--i:3">n</span><span class="ltr" style="--i:4">t</span><span class="ltr" style="--i:5">e</span><span class="ltr" style="--i:6">d</span><span class="ltr us" style="--i:7">_</span><span class="ltr" style="--i:8">P</span><span class="ltr" style="--i:9">e</span><span class="ltr" style="--i:10">a</span><span class="ltr" style="--i:11">c</span><span class="ltr" style="--i:12">h</span><span class="ltr" style="--i:13">y</span></span></h1>
+    <h1 aria-label="Painted_Peachy"><span class="sparkles" aria-hidden="true"><span class="sparkle" style="left:-4%;top:-18%;width:20px;height:20px;color:var(--pink);animation-delay:1.85s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span><span class="sparkle" style="left:22%;top:-30%;width:14px;height:14px;color:#f4c46a;animation-delay:2.0s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span><span class="sparkle" style="left:46%;top:-22%;width:18px;height:18px;color:var(--peach);animation-delay:1.95s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span><span class="sparkle" style="left:70%;top:-32%;width:13px;height:13px;color:var(--pink);animation-delay:2.15s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span><span class="sparkle" style="left:96%;top:-12%;width:22px;height:22px;color:#f4c46a;animation-delay:2.05s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span><span class="sparkle" style="left:84%;top:78%;width:15px;height:15px;color:var(--peach);animation-delay:2.25s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span><span class="sparkle" style="left:56%;top:88%;width:12px;height:12px;color:var(--pink);animation-delay:2.1s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span><span class="sparkle" style="left:10%;top:82%;width:14px;height:14px;color:#f4c46a;animation-delay:2.3s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span><span class="sparkle" style="left:102%;top:48%;width:11px;height:11px;color:var(--pink);animation-delay:2.35s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg></span></span><span class="paint" aria-hidden="true"><span class="ltr" style="--i:0">P</span><span class="ltr" style="--i:1">a</span><span class="ltr" style="--i:2">i</span><span class="ltr" style="--i:3">n</span><span class="ltr" style="--i:4">t</span><span class="ltr" style="--i:5">e</span><span class="ltr" style="--i:6">d</span><span class="ltr us" style="--i:7">_</span><span class="ltr" style="--i:8">P</span><span class="ltr" style="--i:9">e</span><span class="ltr" style="--i:10">a</span><span class="ltr" style="--i:11">c</span><span class="ltr" style="--i:12">h</span><span class="ltr" style="--i:13">y</span></span></h1>
     <p class="tagline">Hand-painted card binders and Riftbound tokens. Every piece is painted by hand, so no two are the same.</p>
   </div>
 </header>
